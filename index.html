@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/swiper.css"/>
+	</head>
+	<body>
+		<!-- .swiper>((.imgList>.imgItem*6)+(.btnList>.btn*2)) -->
+		<div class="swiper">
+			<div class="imgList">
+				<!-- 通过修改active的位置来切换可以显示的图片 -->
+				<div class="imgItem active" style="background-image: url(img/image1.jpg);"></div>
+				<div class="imgItem" style="background-image: url(img/image2.jpg);"></div>
+				<div class="imgItem" style="background-image: url(img/image3.jpg);"></div>
+				<div class="imgItem" style="background-image: url(img/image4.jpg);"></div>
+				<div class="imgItem" style="background-image: url(img/image5.jpg);"></div>
+				<div class="imgItem" style="background-image: url(img/image6.jpg);"></div>
+			</div>
+			<div class="circleList">
+			  <div class="circle active" id="c1"></div>
+			  <div class="circle" id="c2"></div>
+			  <div class="circle" id="c3"></div>
+			  <div class="circle" id="c4"></div>
+			  <div class="circle" id="c5"></div>
+			  <div class="circle" id="c6"></div>
+			</div>
+			<div class="btnList">
+				<div class="btn pre"><</div>
+				<div class="btn next">></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var btnpre=document.querySelector(".swiper .pre");
+			var btnnext=document.querySelector(".swiper .next");
+			var imgListDiv=document.querySelectorAll(".swiper .imgItem");
+			var circleList=document.querySelectorAll(".swiper .circle")
+			var currentImg=0;  //每次点击现在的图片索引加1
+			console.log(imgListDiv);
+			btnnext.onclick=function(){
+				currentImg++;
+				if(currentImg>=imgListDiv.length){
+					currentImg=0;
+				}
+				switchImg();
+				
+			}
+			btnpre.onclick=function(){
+				currentImg--;
+				if(currentImg<0){
+					currentImg=imgListDiv.length-1;
+				}
+				switchImg();
+			}
+			function switchImg(){
+				//初始化，将所有图片的active去掉
+				imgListDiv.forEach(function(item,i){
+					item.classList.remove("active")
+				})
+				
+				circleList.forEach(function(item,i){
+					item.classList.remove("active")
+				})
+				circleList[currentImg].classList.add("active")
+				imgListDiv[currentImg].classList.add("active")
+			}
+			
+			circleList.forEach(function(item,i){
+				item.onclick=function(){
+					var index=parseInt(item.id[1])-1;
+					currentImg=index;         //或者currentImg=i;
+					switchImg();
+				}
+			})
+			/*
+			for(var i=0;i<circleList.length;i++){
+				circleList[i].onclick=(function(index){
+					return function(){
+						currentImg=index;
+						switchImg();
+					}
+				})(i)
+			} 这是一种可以在for循环中实现onclick函数在保证i正确情况下完成绑定的方法
+			在每次循环时使用立即执行函数，记录保存下i的值
+			*/ 
+			
+		</script>
+	</body>
+</html>
